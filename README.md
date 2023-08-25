@@ -1,6 +1,6 @@
 JavaScript browser extension for Edge that autopopulates 
 
-User/n
+User\newline
 Call Source
 Service
 Configuration Item
