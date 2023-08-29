@@ -1,0 +1,70 @@
+[
+    {
+        "Number":8287,
+        "Data" : {
+            "Subject" : "Sailpoint Password Reset",
+            "Service" : "Identity and Messaging Services",
+            "Configuration Item": "Sailpoint (APL)",
+            "Type" : "Service Request/Account Maintenance/NT Password Reset/Unlock",
+        
+            "Description" : [
+                "Sailpoint Password Reset",
+                "-",
+                "Name: {N}",
+                "Device: wpaf{%}-2",
+                "-",
+                "User needs a password reset",
+                "Resetting through Sailpoint"
+            ],
+            
+            "Actions & Solutions" : [
+                "looked up the user on SDHQ > saw they needed a password reset",
+                "went to sailpoint > Admin Options > Caller Verification > sent user verification Code",
+                "had user read off the validation Code > success",
+                "manage access > manage passwords > searched for the user account > manage",
+                "change > set up temporary password",
+                "remoted into wpaf{%}-2 > opened edge > went to sailpoint > signed in with temporary credentials",
+                "user set up new password successfully",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ],
+        }
+    },
+
+    {
+        "Number":9667,
+        "Data" : {
+            "Subject" : "US Ingenico Troubleshooting",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Elevate (APL)",
+            "Type" : "Service Request/Hardware",
+        
+            "Description" : [
+                "US Ingenico Troubleshooting",
+                "-",
+                "Name: {N}",
+                "Device: wpaf{%}-2",
+                "-",
+                "Credit card readers not working",
+                "Locked up"
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{%}-2 > closed elevate",
+                "on my pc went to meraki > looked up the switch > found the credit card reader ports (VLAN 44)",
+                "cycled both ports on the switch > launched elevate > had user run through a transaction",
+                "success",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ],
+        }
+    },
+
+    
+
+    
+    
+]
+

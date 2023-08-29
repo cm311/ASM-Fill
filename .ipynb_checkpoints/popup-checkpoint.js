@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 break;
             default:
-                textToAdd = '';
+                textToAdd = 'Error';
                 break;
         }
 
