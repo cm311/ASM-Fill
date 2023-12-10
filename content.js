@@ -5,43 +5,79 @@ addScripts();
 
 
 function addElements() {
-    var configLabel = document.createElement('p')
-    configLabel.textContent = "Configuration Item: "
-    configLabel.id = "configLabel"
+    // Configuration Label
+    var configLabel = document.createElement('p');
+    configLabel.textContent = "Configuration Item: ";
+    configLabel.id = "configLabel";
+    configLabel.style.marginBottom = '8px'; // Adjust bottom margin
+    configLabel.style.flex = '1'; // Set flex property
     document.body.insertBefore(configLabel, document.body.firstChild);
 
-    var serviceLabel = document.createElement('p')
-    serviceLabel.textContent = "Service: "
-    serviceLabel.id = "serviceLabel"
+    // Service Label
+    var serviceLabel = document.createElement('p');
+    serviceLabel.textContent = "Service: ";
+    serviceLabel.id = "serviceLabel";
+    serviceLabel.style.marginBottom = '8px'; // Adjust bottom margin
+    serviceLabel.style.flex = '1'; // Set flex property
     document.body.insertBefore(serviceLabel, document.body.firstChild);
 
-    var actionsButton = document.createElement('button')
-    actionsButton.textContent = "Actions"
-    actionsButton.id = "actionsButton"
+    // Actions Button
+    var actionsButton = document.createElement('button');
+    actionsButton.textContent = "Actions";
+    actionsButton.id = "actionsButton";
+    actionsButton.style.borderRadius = '5px'; // Set corner radius
+    actionsButton.style.marginRight = '8px'; // Adjust right margin
+    actionsButton.style.padding = '5px 10px'; // Adjust padding
+    actionsButton.style.display = 'block'; // Place on a new line
     document.body.insertBefore(actionsButton, document.body.firstChild);
 
-    var descriptionButton = document.createElement('button')
-    descriptionButton.textContent = "Description"
-    descriptionButton.id = "descriptionButton"
+    // Description Button
+    var descriptionButton = document.createElement('button');
+    descriptionButton.textContent = "Description";
+    descriptionButton.id = "descriptionButton";
+    descriptionButton.style.borderRadius = '5px'; // Set corner radius
+    descriptionButton.style.marginRight = '8px'; // Adjust right margin
+    descriptionButton.style.padding = '5px 10px'; // Adjust padding
+    descriptionButton.style.display = 'block'; // Place on a new line
     document.body.insertBefore(descriptionButton, document.body.firstChild);
-    
 
-    var kaInput = document.createElement('input')
-    kaInput.placeholder = 'Input KA number'
-    kaInput.id = "kaInput"
+    // KA Input
+    var kaInput = document.createElement('input');
+    kaInput.placeholder = 'Input KA number';
+    kaInput.id = "kaInput";
+    kaInput.style.marginBottom = '8px'; // Adjust bottom margin
+    kaInput.style.padding = '5px'; // Adjust padding
+    kaInput.style.display = 'block'; // Place on a new line
     document.body.insertBefore(kaInput, document.body.firstChild);
 
-    var nameInput = document.createElement('input')
-    nameInput.placeholder = 'Input Name'
-    nameInput.id = "nameInput"
+    // Name Input
+    var nameInput = document.createElement('input');
+    nameInput.placeholder = 'Input Name';
+    nameInput.id = "nameInput";
+    nameInput.style.marginBottom = '8px'; // Adjust bottom margin
+    nameInput.style.padding = '5px'; // Adjust padding
+    nameInput.style.display = 'block'; // Place on a new line
     document.body.insertBefore(nameInput, document.body.firstChild);
-    
-    var storeInput = document.createElement('input')
-    storeInput.placeholder = 'Input Store number'
-    storeInput.id = "storeInput"
+
+    // Store Input
+    var storeInput = document.createElement('input');
+    storeInput.placeholder = 'Input Store number';
+    storeInput.id = "storeInput";
+    storeInput.style.marginBottom = '8px'; // Adjust bottom margin
+    storeInput.style.padding = '5px'; // Adjust padding
+    storeInput.style.display = 'block'; // Place on a new line
     document.body.insertBefore(storeInput, document.body.firstChild);
-    
+
+    // Container for configLabel and serviceLabel
+    var labelsContainer = document.createElement('div');
+    labelsContainer.style.display = 'flex'; // Use flexbox
+    labelsContainer.style.justifyContent = 'flex-end'; // Align to the right
+    document.body.insertBefore(labelsContainer, document.body.firstChild);
+    labelsContainer.appendChild(configLabel);
+    labelsContainer.appendChild(serviceLabel);
 }
+
+
 
 function addScripts() {
     descriptionButton.addEventListener('click', function() {
