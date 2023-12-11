@@ -289,5 +289,58 @@ ka_data = {
                 "Issue Resolved",
                 "Closing Ticket"
             ]
+        },
+
+    '9822' : 
+        {
+            "Subject" : "User needs Moneris Receipt",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Elevate",
+            "Type" : "Service Request/Hardware/Other",
+        
+            "Description" : [
+                "User needs moneris receipt",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "Transaction went through in Moneris, froze in Elevate",
+                "User wants to put through auth codes on X1"
+            ],
+            
+            "Actions & Solutions" : [
+                "from my pc went to the monerisGo portal > looked up the store > looked up the transaction by the amount and date >",
+                "clicked send > sent the receipt to store email > ",
+                "informed user they could close the transaction on the X1 with authorization codes > user understood",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '7784' : 
+        {
+            "Subject" : "People pulse password reset",
+            "Service" : "Business Application",
+            "Configuration Item": "PeoplePulse (APL)",
+            "Type" : "Incident/Business Applications/North America",
+        
+            "Description" : [
+                "People pulse password reset",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User is trying to get into Workday",
+                "Needs a people pulse password reset"
+            ],
+            
+            "Actions & Solutions" : [
+                "from my pc went to hrportal > looked up the user by 6 digit ppg ID > verified ID > clicked reset password >",
+                "remoted into wpaf8523-x1 > pasted reset password link in browser > user rest password > was able to log into people pulse",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
         }
     }
