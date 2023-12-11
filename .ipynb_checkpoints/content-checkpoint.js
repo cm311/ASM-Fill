@@ -11,7 +11,6 @@ function addElements() {
     configLabel.id = "configLabel";
     configLabel.style.marginBottom = '8px'; // Adjust bottom margin
     configLabel.style.flex = '1'; // Set flex property
-    document.body.insertBefore(configLabel, document.body.firstChild);
 
     // Service Label
     var serviceLabel = document.createElement('p');
@@ -19,7 +18,6 @@ function addElements() {
     serviceLabel.id = "serviceLabel";
     serviceLabel.style.marginBottom = '8px'; // Adjust bottom margin
     serviceLabel.style.flex = '1'; // Set flex property
-    document.body.insertBefore(serviceLabel, document.body.firstChild);
 
     // Actions Button
     var actionsButton = document.createElement('button');
@@ -29,7 +27,6 @@ function addElements() {
     actionsButton.style.marginRight = '8px'; // Adjust right margin
     actionsButton.style.padding = '5px 10px'; // Adjust padding
     actionsButton.style.display = 'block'; // Place on a new line
-    document.body.insertBefore(actionsButton, document.body.firstChild);
 
     // Description Button
     var descriptionButton = document.createElement('button');
@@ -39,7 +36,6 @@ function addElements() {
     descriptionButton.style.marginRight = '8px'; // Adjust right margin
     descriptionButton.style.padding = '5px 10px'; // Adjust padding
     descriptionButton.style.display = 'block'; // Place on a new line
-    document.body.insertBefore(descriptionButton, document.body.firstChild);
 
     // KA Input
     var kaInput = document.createElement('input');
@@ -48,7 +44,6 @@ function addElements() {
     kaInput.style.marginBottom = '8px'; // Adjust bottom margin
     kaInput.style.padding = '5px'; // Adjust padding
     kaInput.style.display = 'block'; // Place on a new line
-    document.body.insertBefore(kaInput, document.body.firstChild);
 
     // Name Input
     var nameInput = document.createElement('input');
@@ -57,7 +52,6 @@ function addElements() {
     nameInput.style.marginBottom = '8px'; // Adjust bottom margin
     nameInput.style.padding = '5px'; // Adjust padding
     nameInput.style.display = 'block'; // Place on a new line
-    document.body.insertBefore(nameInput, document.body.firstChild);
 
     // Store Input
     var storeInput = document.createElement('input');
@@ -66,15 +60,48 @@ function addElements() {
     storeInput.style.marginBottom = '8px'; // Adjust bottom margin
     storeInput.style.padding = '5px'; // Adjust padding
     storeInput.style.display = 'block'; // Place on a new line
-    document.body.insertBefore(storeInput, document.body.firstChild);
 
-    // Container for configLabel and serviceLabel
-    var labelsContainer = document.createElement('div');
-    labelsContainer.style.display = 'flex'; // Use flexbox
-    labelsContainer.style.justifyContent = 'flex-end'; // Align to the right
-    document.body.insertBefore(labelsContainer, document.body.firstChild);
-    labelsContainer.appendChild(configLabel);
-    labelsContainer.appendChild(serviceLabel);
+
+    var suggestedKA = document.createElement('p');
+    suggestedKA.id = 'suggestedKA'
+    suggestedKA.textContent = 'Empty'
+    suggestedKA.style.flex = '1';
+
+    var searchInput = document.createElement('input');
+    searchInput.placeholder = 'Search word in title';
+    searchInput.id = "searchInput";
+    searchInput.style.flex = '1';
+
+    var searchButton = document.createElement('button');
+    searchButton.placeholder = 'Search word in title';
+    searchButton.id = "searchButton";
+    searchButton.textContent = "Search"
+    searchButton.style.flex = '1';
+
+    
+    
+
+    // Empty Container (Right Div)
+    var rightContainer = document.createElement('div');
+    rightContainer.style.flex = '1'; // Take up remaining space
+    rightContainer.appendChild(searchButton);
+    rightContainer.appendChild(suggestedKA);
+    rightContainer.appendChild(searchInput);
+    
+    document.body.insertBefore(rightContainer, document.body.firstChild);
+
+    // Container for configLabel and serviceLabel (Left Div)
+    var leftContainer = document.createElement('div');
+    leftContainer.style.display = 'flex'; // Use flexbox
+    leftContainer.style.justifyContent = 'flex-end'; // Align to the right
+    leftContainer.appendChild(configLabel);
+    leftContainer.appendChild(serviceLabel);
+    leftContainer.appendChild(actionsButton);
+    leftContainer.appendChild(descriptionButton);
+    leftContainer.appendChild(kaInput);
+    leftContainer.appendChild(nameInput);
+    leftContainer.appendChild(storeInput);
+    document.body.insertBefore(leftContainer, document.body.firstChild);
 }
 
 
@@ -104,6 +131,20 @@ function addScripts() {
 
         document.getElementById('serviceLabel').innerHTML = "Service: " + ka_data[kaValue]['Service']
         document.getElementById('configLabel').innerHTML = "Configuration Item: " + ka_data[kaValue]['Configuration Item']
+    });
+
+    searchButton.addEventListener('click', function() {
+        var searched = document.getElementById('searchInput').value;
+        //var actions = ka_data[kaValue]['Actions & Solutions'].join('\n');
+        //actions = actions.replace('{1}', storeValue);
+        
+        //copyToClipboard(actions)
+
+        for (var key in ka_data) {
+            if (ka_data[key]["Subject"].toLowerCase().includes(searched.toLowerCase())) {
+                document.getElementById('suggestedKA').innerHTML = key + " " + ka_data[key]["Subject"]
+            }
+        }
     });
 }
 
