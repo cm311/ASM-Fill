@@ -101,6 +101,9 @@ function addScripts() {
         actions = actions.replace('{1}', storeValue);
         
         copyToClipboard(actions)
+
+        document.getElementById('serviceLabel').innerHTML = "Service: " + ka_data[kaValue]['Service']
+        document.getElementById('configLabel').innerHTML = "Configuration Item: " + ka_data[kaValue]['Configuration Item']
     });
 }
 
