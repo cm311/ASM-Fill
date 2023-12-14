@@ -29,6 +29,16 @@ function addElements() {
     typeLabel.style.marginBottom = '8px'; // Adjust bottom margin
     typeLabel.style.flex = '1'; // Set flex property
 
+    //Info Bubble
+    var infoBubble = document.createElement('div');
+    infoBubble.id = 'infoBubble';
+    infoBubble.style.display = 'none';
+    infoBubble.style.position = 'absolute';
+    infoBubble.style.backgroundColor = '#f1f1f1';
+    infoBubble.style.color = '#333';
+    infoBubble.style.opacity = '0';
+    infoBubble.style.transition = 'opacity 0.5s';
+
     // Actions Button
     var actionsButton = document.createElement('button');
     actionsButton.textContent = "Actions";
@@ -82,7 +92,7 @@ function addElements() {
 
     var suggestedKA = document.createElement('p');
     suggestedKA.id = 'suggestedKA'
-    suggestedKA.textContent = 'Empty'
+    suggestedKA.textContent = ' '
     suggestedKA.style.flex = '1';
 
     var searchInput = document.createElement('input');
@@ -122,7 +132,7 @@ function addElements() {
     rightContainer.appendChild(suggestedKA);
     rightContainer.appendChild(searchInput);
     rightContainer.style.fontFamily = "Roboto, sans-serif"
-    rightContainer.style.background = "linear-gradient(to bottom right, #59cefc 70%, #EC058E)"
+    rightContainer.style.background = "linear-gradient(to bottom right, #59cefc 75%, #EC058E)"
     document.body.insertBefore(rightContainer, document.body.firstChild);
 
     // Container for configLabel and serviceLabel (Left Div)
@@ -133,12 +143,14 @@ function addElements() {
     leftContainer.appendChild(configLabel);
     leftContainer.appendChild(typeLabel);
     leftContainer.appendChild(descriptionButton);
+    //leftContainer.appendChild(infoBubble);
     leftContainer.appendChild(actionsButton);
     leftContainer.appendChild(kaInput);
     leftContainer.appendChild(nameInput);
     leftContainer.appendChild(storeInput);
     leftContainer.style.fontFamily = "Roboto, sans-serif"
     leftContainer.style.background = "#59CEFC"
+    leftContainer.style.background = "linear-gradient(to top left, #59cefc 40%, #1DACF2)"
     document.body.insertBefore(leftContainer, document.body.firstChild);
 }
 
@@ -147,13 +159,13 @@ function addElements() {
 function addScripts() {
     descriptionButton.addEventListener('click', function() {
         var storeValue = document.getElementById('storeInput').value;
-        var kaValue = document.getElementById('kaInput').value;
+        var kaValue = document.getElementById('kaInput').value.trim();
         var nameValue = document.getElementById('nameInput').value;
         var description = ka_data[kaValue]['Description'].join('\n');
         description = description.replace('{0}', nameValue).replace('{1}', storeValue);
         
-        copyToClipboard(description)
-
+        copyToClipboard(description);
+        
         document.getElementById('serviceLabel').innerHTML = "Service: " + ka_data[kaValue]['Service']
         document.getElementById('configLabel').innerHTML = "Configuration Item: " + ka_data[kaValue]['Configuration Item']
         document.getElementById('typeLabel').innerHTML = 'Type: ' + ka_data[kaValue]['Type']
@@ -161,29 +173,31 @@ function addScripts() {
 
    actionsButton.addEventListener('click', function() {
         var storeValue = document.getElementById('storeInput').value;
-        var kaValue = document.getElementById('kaInput').value;
+        var kaValue = document.getElementById('kaInput').value.trim();
         var nameValue = document.getElementById('nameInput').value;
         var actions = ka_data[kaValue]['Actions & Solutions'].join('\n');
         actions = actions.replaceAll('{1}', storeValue);
         
-        copyToClipboard(actions)
+        copyToClipboard(actions);
 
         document.getElementById('serviceLabel').innerHTML = "Service: " + ka_data[kaValue]['Service']
         document.getElementById('configLabel').innerHTML = "Configuration Item: " + ka_data[kaValue]['Configuration Item']
         document.getElementById('typeLabel').innerHTML = 'Type: ' + ka_data[kaValue]['Type']
     });
 
+
+    
     searchButton.addEventListener('click', function() {
         var searched = document.getElementById('searchInput').value;
         //var actions = ka_data[kaValue]['Actions & Solutions'].join('\n');
         //actions = actions.replace('{1}', storeValue);
         
         //copyToClipboard(actions)
-        document.getElementById('suggestedKA').innerHTML = " "
+        document.getElementById('suggestedKA').innerHTML = "   "
 
         for (var key in ka_data) {
             if (ka_data[key]["Subject"].toLowerCase().includes(searched.toLowerCase())) {
-                document.getElementById('suggestedKA').innerHTML += "  " + key + " " + ka_data[key]["Subject"]
+                document.getElementById('suggestedKA').innerHTML += "    " + key + " " + ka_data[key]["Subject"]
             }
         }
     });
@@ -194,7 +208,9 @@ function addScripts() {
         document.getElementById('typeLabel').innerHTML = 'Type: '
         document.getElementById('kaInput').value = "";
         document.getElementById('nameInput').value = "";
+        document.getElementById('searchInput').value = "";
         document.getElementById('storeInput').value = "";
+        document.getElementById('suggestedKA').textContent = "";
 
     });
 }
@@ -638,6 +654,299 @@ ka_data = {
                 "Issue Resolved",
                 "Closing Ticket"
             ]
+        },
+
+    '8636' : 
+        {
+            "Subject" : "Concur/Canon Permissions Error uploading receipts",
+            "Service" : "Business Application",
+            "Configuration Item": "NA OF Concur (APL)",
+            "Type" : "Incident/Hardware/Scanner",
+        
+            "Description" : [
+                "Concur/Canon Permissions Error uploading receipts",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User is trying to upload receipts into concur",
+                "They get an error"
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into  wpaf{1}-x1 > saw the error",
+                "copied all the contents of Concur Scans into a new folder, C:\Concur backup > deleted Concur Scans folder",
+                "navigated to > \\wpaf{1}-X1\\C$\\Program Files (x86)\\Hewlett-Packard\\CM\\Agent\\Lib\\System\\Radia\\Software\\ZSERVICE >",
+                "deleted CANON_LIDE300_SCANNER and Canon_LIDE300_Permissions folders >",
+                "navigated to >  \\wpaf{1}-X1\\C$\\Program Files\\PPG\\Setups > deleted CanonLEDE300_Scanner folder > on X1 launched radia",
+                "uninstalled CAnon LIDE 300 model scanner > reinstalled > took about 5 minutes > verified canon permissions > broken > hit repair > ",
+                "copied contents of concur backup folder to new Concur scans folder > deleted concur backup folder",
+                "User logged into managerSSO > tried to upload scanned pdf > no more errors",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '5214' : 
+        {
+            "Subject" : "SRV/server offline for US/PR store",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "POS SRV Builds",
+            "Type" : "Service Request/PC Builds",
+        
+            "Description" : [
+                "SRV/server offline for US/PR store",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-srv",
+                "-",
+                "user's server is offline",
+                "cannot log into it",
+                "Service Tag: "
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "ran a ping in men and mice > saw that the srv was red, offline",
+                "had user locate the SRV computer in the store > had user power it on > still not coming online",
+                "had user plug in monitor to the SRV > 'no boot device found' > had user restart the PC ",
+                "held F2 while rebooting to get into the BIOS > settings > general > boot sequence > ",
+                "Unchecked all except the 'toshiba' in the boot sequence > apply > save > exit > restart",
+                "same issue, 'no boot device found' > gathered service tag > had user unplug the SRV ",
+                "ran poslog.psl from XCENTER DB",
+                "SELECT * FROM trn_poslog_data (nolock) where rtl_loc_id = '{1}' and business_date = '2018-04-09 00:00:00.000' ",
+                "Emailed out the finance team",
+                "",
+                "Escalating to Site IT",
+                "",
+                "Hello team,",
+                "Store {1}'s server went and needs to be replaced.  Are you able to send a new one?"
+            ]
+        },
+
+    '6727' : 
+        {
+            "Subject" : "Replenishment order SAP not dropping to XStore",
+            "Service" : "Business Application",
+            "Configuration Item": "Optima OEV (APL)",
+            "Type" : "Incident/Business Applications/North America/AC USCA Optima OEV",
+        
+            "Description" : [
+                "Replenishment order not dropping to XStore",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User has a replenishment order",
+                "Has not dropped to XStore for the user to receive",
+                "SAP #: "
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{1}-x1 > gathered the SAP number",
+                "from my PC ran H:\\Common\\Powershell\\Optima\\OptimaOrderCheck.ps1 > no errors",
+                "POST PICTURES AND RESULTS",
+                "ran ASN_PO_Check_IMPROVED.ps1 > POST PICTURES AND RESULTS",
+                "",
+                "Ticket Deferred"
+            ]
+        },
+
+    '3723' : 
+        {
+            "Subject" : "User is logged in on a different profile",
+            "Service" : "Identity and Messaging Services",
+            "Configuration Item": "Active Directory (APL)",
+            "Type" : "Service Request/Account Maintenance/NT Password Reset/Unlock",
+        
+            "Description" : [
+                "User is logged in on a different profile",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User logs into the X1",
+                "all their icons are missing, but PC still works"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{1}-x1 > cmd > whoami > PC was on a different profile",
+                "start menu > sign out > sign in as other user > wpaf{1}-1 > now everything looks normal",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '6250' : 
+        {
+            "Subject" : "User can't access external site, url blocked",
+            "Service" : "Internet Services",
+            "Configuration Item": "Edge Browser - Microsoft (APL)",
+            "Type" : "Incident/Productivity Tools & Applications/Microsoft Edge",
+        
+            "Description" : [
+                "User can't access external site, url blocked",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User is trying to access a work related site",
+                "they get a message that it is blocked by zScaler"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf8635-x1 > saw the error",
+                "Website/Url: ....",
+                "Description of site: ....",
+                "",
+                "Escalating to Infrastructure",
+                "",
+                "Hi team, store {1} is trying to ...... but the site is blocked.  Are you able to unblock the site?"
+            ]
+        },
+
+    '9314' : 
+        {
+            "Subject" : "Brother printer setup on FP pc",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Printer",
+            "Type" : "Incident/Hardware/Printer",
+        
+            "Description" : [
+                "Brother printer setup on FP pc",
+                "-",
+                "Name: {0}",
+                "{1}",
+                "-",
+                "User has a brother label printer on a formula pro PC",
+                "The labels are not printing out correctly"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "bomgared into the dealer PC > control panel > view devices and printers > right clicked on the brother > ",
+                "had preferences > paper size set up > had user measure the correct paper size > made sure to change it from Advanced tab as well",
+                "opened formula pro > settings > printer > made sure the brother was setup as the printer > looked up a formula > printed a label > success",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '3733' : 
+        {
+            "Subject" : "User can't log into X1, Starlink/tec showing SRV/server",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Store Peripherals",
+            "Type" : "Incident/Hardware",
+        
+            "Description" : [
+                "User can't log into X1, Starlink/tec showing SRV/server",
+                "-",
+                "Name: {0}",
+                "Device: {1}-x1",
+                "-",
+                "User is trying to get into the X1",
+                "They just see Xstore on the monitor"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{1}-srv > user saw me remoted in > told user that was the SRV > remoted into wpaf8401-x1 > was able to ",
+                "had user press select button on StarLink > user was able to see the X1 and use it now",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '9712' : 
+        {
+            "Subject" : "Refund for account in elevate",
+            "Service" : "Business Application",
+            "Configuration Item": "Elevate (APL)",
+            "Type" : "Incident/Business Applications/North America",
+        
+            "Description" : [
+                "Refund for account in elevate",
+                "-",
+                "Name: {0}",
+                "Device: {1}-x1",
+                "-",
+                "User has an invoice they want to return in elevate",
+                "the customer was not charged tax, but the return wants to return tax"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{1}-x1 > closed elevate > had the user click refund > no receipt instead of scanning the invoice >",
+                "entered in the SKUs to return > was not returning tax this time",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '8613' : 
+        {
+            "Subject" : "Phones dropping calls and can't call out",
+            "Service" : "Voice Services",
+            "Configuration Item": "Verizon One Talk",
+            "Type" : "Incident/Hardware/Telephone",
+        
+            "Description" : [
+                "Phones dropping calls and can't call out",
+                "-",
+                "Name: {0}",
+                "Device: {1}-x1",
+                "-",
+                "User can't call out at all",
+                "Is happening on all the phones and all the calls"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "Went to Meraki > looked up the store > switches >",
+                "found the ports for the w60b in the switch and SIP (desk phones) > cycled those ports > waited about 2 minutes >",
+                "user made a test call > user was able to call out successfully",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '8296' : 
+        {
+            "Subject" : "User can't log into ClientLink",
+            "Service" : "Business Application",
+            "Configuration Item": "ClientLink (APL)",
+            "Type" : "Incident/Business Applications/North America",
+        
+            "Description" : [
+                "User can't log into ClientLink",
+                "-",
+                "Name: {0}",
+                "Device: {1}-x1",
+                "-",
+                "'You cannot access this right now'",
+                "User can't get in to client link"
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf{1}-x1 > three dots in edge > favorites > three dots > open favorites page >",
+                "new favorites > pasted clientLink link https://my345171-sso.crm.ondemand.com/ > deleted the old links that had  https://my345171-sso.crm.ondemand.com/...........",
+                "this will force it to generate a new security token each time > tested it > success",
+                "",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
         }
+    
     
     }
