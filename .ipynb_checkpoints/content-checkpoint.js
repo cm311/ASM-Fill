@@ -1,6 +1,18 @@
 
-addElements();
-addScripts();
+if (!document.getElementById("rightContainer")) {
+    addElements();
+    addScripts();
+}
+else {
+    console.log('here')
+    var rightContainer = document.getElementById("rightContainer");
+    var leftContainer = document.getElementById("leftContainer");
+    rightContainer.innerHTML = "";
+    leftContainer.innerHTML = "";
+    rightContainer.remove();
+    leftContainer.remove();
+}
+
 
 //#0071AA - Elevate color
 //#F9FCFC - Elevate font color
@@ -90,15 +102,20 @@ function addElements() {
     storeInput.style.display = 'block'; // Place on a new line
 
 
+    
+
     var suggestedKA = document.createElement('p');
     suggestedKA.id = 'suggestedKA'
     suggestedKA.textContent = ' '
-    suggestedKA.style.flex = '1';
+    suggestedKA.style.marginLeft = '2%'
+    suggestedKA.style.width = '46%'
+    //suggestedKA.style.flex = '1';
 
     var searchInput = document.createElement('input');
     searchInput.placeholder = 'Search word in title';
     searchInput.id = "searchInput";
-    searchInput.style.flex = '1';
+    searchInput.style.height = '40%'
+    //searchInput.style.flex = '1';
 
     var searchButton = document.createElement('button');
     searchButton.placeholder = 'Search word in title';
@@ -109,7 +126,8 @@ function addElements() {
     searchButton.style.color = '#F9FCFC'
     searchButton.style.backgroundColor = '#0071AA'
     searchButton.style.border = 'none'
-    searchButton.style.flex = '1';
+    searchButton.style.height = '40%'
+    //searchButton.style.flex = '1';
 
     var clearButton = document.createElement('button');
     clearButton.id = "clearButton"
@@ -119,24 +137,59 @@ function addElements() {
     clearButton.style.color = '#F9FCFC'
     clearButton.style.backgroundColor = '#0071AA'
     clearButton.style.border = 'none'
+    clearButton.style.height = '40%'
+
+
+    var searchContact = document.createElement('button');
+    searchContact.placeholder = 'Search Contact Info';
+    searchContact.id = "searchContact";
+    searchContact.textContent = "Search"
+    searchContact.style.borderRadius = '5px'; // Set corner radius
+    searchContact.style.marginRight = '8px'; // Adjust right margin
+    searchContact.style.color = '#F9FCFC'
+    searchContact.style.backgroundColor = '#0071AA'
+    searchContact.style.border = 'none'
+    searchContact.style.height = '40%'
+
+    var contactInput = document.createElement('input');
+    contactInput.placeholder = 'Search Contact Info';
+    contactInput.id = "contactInput";
+    contactInput.style.height = '40%';
+
+    var contactInfo = document.createElement('p');
+    contactInfo.id = 'contactInfo'
+    contactInfo.textContent = ' '
+    contactInfo.style.marginLeft = '2%'
+    contactInfo.style.flex = '1'
+    //suggestedKA.style.width = '46%'
+
+
+
 
     
-    
+    //ADDING ALL ELEMENTS TO THE DIVS OR DELETE
 
     // Empty Container (Right Div)
     var rightContainer = document.createElement('div');
+    rightContainer.id = "rightContainer"
     //rightContainer.style.flex = '1'; // Take up remaining space
-    rightContainer.style.height = "10%"
+    rightContainer.style.display = 'flex'; // Use flexbox
+    //rightContainer.style.justifyContent = 'flex-end'; // Align to the right
+    rightContainer.style.height = "7%"
     rightContainer.appendChild(searchButton);
     rightContainer.appendChild(clearButton);
-    rightContainer.appendChild(suggestedKA);
     rightContainer.appendChild(searchInput);
+    rightContainer.appendChild(suggestedKA);
+    rightContainer.appendChild(searchContact);
+    rightContainer.appendChild(contactInput);
+    rightContainer.appendChild(contactInfo);
     rightContainer.style.fontFamily = "Roboto, sans-serif"
     rightContainer.style.background = "linear-gradient(to bottom right, #59cefc 75%, #EC058E)"
     document.body.insertBefore(rightContainer, document.body.firstChild);
 
     // Container for configLabel and serviceLabel (Left Div)
     var leftContainer = document.createElement('div');
+    leftContainer.id = "leftContainer"
     leftContainer.style.display = 'flex'; // Use flexbox
     leftContainer.style.justifyContent = 'flex-end'; // Align to the right
     leftContainer.appendChild(serviceLabel);
@@ -153,6 +206,7 @@ function addElements() {
     leftContainer.style.background = "linear-gradient(to top left, #59cefc 40%, #1DACF2)"
     document.body.insertBefore(leftContainer, document.body.firstChild);
 }
+
 
 
 
@@ -192,7 +246,6 @@ function addScripts() {
         //var actions = ka_data[kaValue]['Actions & Solutions'].join('\n');
         //actions = actions.replace('{1}', storeValue);
         
-        //copyToClipboard(actions)
         document.getElementById('suggestedKA').innerHTML = "   "
 
         for (var key in ka_data) {
@@ -202,6 +255,23 @@ function addScripts() {
         }
     });
 
+    searchContact.addEventListener('click', function() {
+        var searched = document.getElementById('contactInput').value;
+        console.log(searched)
+        
+        document.getElementById('contactInfo').innerHTML = "   "
+
+        for (var key in contacts) {
+            console.log(contacts[key])
+            if (contacts[key]["Entity:"].toLowerCase().includes(searched.toLowerCase())) {
+                document.getElementById('contactInfo').innerHTML += " " + contacts[key]["Entity:"] + "  " + contacts[key]["Phone:"] +
+                    "   " + contacts[key]["Email:"] + "          "
+            }
+        }
+    });
+
+
+
     clearButton.addEventListener('click', function() {
         document.getElementById('serviceLabel').innerHTML = "Service: "
         document.getElementById('configLabel').innerHTML = "Configuration Item: "
@@ -210,7 +280,9 @@ function addScripts() {
         document.getElementById('nameInput').value = "";
         document.getElementById('searchInput').value = "";
         document.getElementById('storeInput').value = "";
-        document.getElementById('suggestedKA').textContent = "";
+        document.getElementById('suggestedKA').textContent = ' ';
+        document.getElementById('contactInput').value = '';
+        document.getElementById('contactInfo').textContent = ' ';
 
     });
 }
@@ -236,6 +308,34 @@ function copyToClipboard(text) {
 
 
 
+pass = {
+            1 : 
+                {
+                    'Description' : 'Login',
+                    'Account' : 'XStore',
+                    'pw' : '12345'
+                }
+       }
+
+/*
+contacts = {
+            '1' :
+                {
+                    'Entity':'Cash Desk (US)',
+                    'Phone':'None',
+                    'Email':'PPGACCashDesk@ppg.com'
+                },
+            '2' : 
+                {
+                    'Entity':'Color Lab',
+                    'Phone':'4125173738',
+                    'Email':'accolorlab@ppg.com'
+                }
+            }
+*/
+
+
+contacts = {"1": {"Entity:": "Apex (US) & Apex (CA)", "Phone:": null, "Email:": "afstorespricing@ppg.com\u00a0\u00a0 \u00a0CanadaStorespricing@ppg.com", "Individual:": null}, "2": {"Entity:": "Bell Alliance", "Phone:": "888-214-7896", "Email:": null, "Individual:": null}, "3": {"Entity:": "Bell Canada", "Phone:": "877-877-2426", "Email:": "888-788-2355  or 866-462-3551", "Individual:": null}, "4": {"Entity:": "Cash Desk (US)", "Phone:": null, "Email:": "PPGACCashDesk@ppg.com", "Individual:": null}, "5": {"Entity:": "Cash Desk (CA)", "Phone:": null, "Email:": "CanadaBankingSupport@ppg.com", "Individual:": null}, "6": {"Entity:": "CEI Driver Services", "Phone:": "866.894.0383", "Email:": "driverservices.PPG@ceinetwork.com", "Individual:": null}, "7": {"Entity:": "Color Lab", "Phone:": "412-517-3738", "Email:": "accolorlab@ppg.com", "Individual:": null}, "8": {"Entity:": "Corob Service", "Phone:": "800-728-8408", "Email:": "ext. 225  -- Previously Listed as 255", "Individual:": "Tech: Mike"}, "9": {"Entity:": "Credit (US)", "Phone:": "800-852-7860", "Email:": "afcredit@ppg.com", "Individual:": null}, "10": {"Entity:": "Credit (CA)", "Phone:": null, "Email:": "*Credit CA PAF Stores", "Individual:": null}, "11": {"Entity:": "Credit (Quebec CA)", "Phone:": "800-321-6564", "Email:": "Quebec Region Only\u00a0", "Individual:": null}, "12": {"Entity:": "Credit (PMC)", "Phone:": "855-762-2847", "Email:": null, "Individual:": null}, "13": {"Entity:": "Customer Service (US)", "Phone:": "877-774-3131", "Email:": "StoreOrders@ppg.com   AskStoreCS@ppg.com", "Individual:": null}, "14": {"Entity:": "Customer Service (CA)", "Phone:": "800-387-2253", "Email:": null, "Individual:": null}, "15": {"Entity:": "Customer Service (Dealer Order)", "Phone:": "888-774-1010", "Email:": null, "Individual:": null}, "16": {"Entity:": "Customer Service Dealer Formula Pro Help Desk", "Phone:": "844-916-0606", "Email:": null, "Individual:": null}, "17": {"Entity:": "Central Purchasing - SSO (special sundries)", "Phone:": "844-594-3233", "Email:": "SSO@ppg.com", "Individual:": null}, "18": {"Entity:": "Dealer RITSD Toll Free", "Phone:": "833-562-8030", "Email:": "RITSD-USCA@ppg.com", "Individual:": null}, "19": {"Entity:": "DSR", "Phone:": "877-563-6709", "Email:": "*HARD DOWN CASES after 10 min on hold 918-336-6900", "Individual:": "ppgpaintsupport@dsrglobal.com"}, "20": {"Entity:": "DataColor", "Phone:": "800-982-6496", "Email:": null, "Individual:": null}, "21": {"Entity:": "Dromont (Porter Services)", "Phone:": "980-237-8274", "Email:": "customer.care@dromont.com", "Individual:": null}, "22": {"Entity:": "Dromont(Mark)", "Phone:": "704-388-7914", "Email:": "mark.strickland@dromontgroup.com", "Individual:": null}, "23": {"Entity:": "EFB Support", "Phone:": "866-774-5297", "Email:": "*AC PPG EFB Support", "Individual:": "DO NOT GIVE TO STORES"}, "24": {"Entity:": "Fluid Management HD", "Phone:": "800-462-2466", "Email:": "Old number: 847-520-6008  ", "Individual:": "DO NOT GIVE TO STORES"}, "25": {"Entity:": "Global IT Service Desk", "Phone:": "412-434-2662", "Email:": "itsd-global@ppg.com", "Individual:": null}, "26": {"Entity:": "HR US", "Phone:": "888-774-2121", "Email:": "hrsupportppgac@ppg.com", "Individual:": null}, "27": {"Entity:": "HR Canada", "Phone:": "877-839-1881", "Email:": null, "Individual:": null}, "28": {"Entity:": "HR Puerto Rico", "Phone:": null, "Email:": "idalis.landrau@ppg.com", "Individual:": "Idalis Iandrau"}, "29": {"Entity:": "Hero", "Phone:": "800-494-4376", "Email:": null, "Individual:": null}, "30": {"Entity:": "Inventory Team", "Phone:": null, "Email:": "PPGStoreInventory@ppg.com", "Individual:": null}, "31": {"Entity:": "AC Kronos Support", "Phone:": null, "Email:": "ACKronosSupport@ppg.com", "Individual:": null}, "32": {"Entity:": "Moneris Solutions", "Phone:": "866-319-7450", "Email:": null, "Individual:": null}, "33": {"Entity:": "Operator ", "Phone:": "412-434-3131", "Email:": null, "Individual:": null}, "34": {"Entity:": "Payroll", "Phone:": null, "Email:": "*PAF Payroll Team", "Individual:": null}, "35": {"Entity:": "People Pulse", "Phone:": "833-774-7772", "Email:": null, "Individual:": null}, "36": {"Entity:": "Promotions US Paint", "Phone:": "724-591-6342", "Email:": "carrozzi@ppg.com", "Individual:": "Shannon Carrozzi"}, "37": {"Entity:": "Promotions US Spray and Equipment ", "Phone:": "724-814-9805", "Email:": "rhodes@ppg.com", "Individual:": "Don Rhodes"}, "38": {"Entity:": "Promotions US Spray and Equipment", "Phone:": "508-717-5255", "Email:": "vigue@ppg.com", "Individual:": "Amy Vigue"}, "39": {"Entity:": "Promotions US All Other Sundries", "Phone:": "412-527-2219", "Email:": "mchugh@ppg.com", "Individual:": "Doreen McHugh"}, "40": {"Entity:": "Promotions CA Paint - Sundry", "Phone:": null, "Email:": "rob.mcdonald@ppg.com - gurmukh.banait@ppg.com", "Individual:": "Rob McDonald  - Gurmukh Banait"}, "41": {"Entity:": "Promotions PR Paint/Sundry", "Phone:": null, "Email:": "velezramos@ppg.com", "Individual:": "Arlivonne Velez-Ramos"}, "42": {"Entity:": "ProSight Support", "Phone:": "833-482-0509", "Email:": "prosighthelp@ppg.com", "Individual:": null}, "43": {"Entity:": "QuestZones", "Phone:": "866-462-3551", "Email:": null, "Individual:": null}, "44": {"Entity:": "International Star Rewards (CA\\PR)", "Phone:": "718-609-8500", "Email:": null, "Individual:": null}, "45": {"Entity:": "Star Rewards", "Phone:": "888-598-4455 ", "Email:": null, "Individual:": null}, "46": {"Entity:": "Store Maintenance", "Phone:": null, "Email:": "PPGACStoreMaintenance@ppg.com", "Individual:": null}, "47": {"Entity:": "Tax Dept. Fax", "Phone:": "800-640-4726", "Email:": null, "Individual:": null}, "48": {"Entity:": "Tech Support (Canada/French)", "Phone:": "800-387-2253", "Email:": null, "Individual:": null}, "49": {"Entity:": "Tech Support (Product Questions)", "Phone:": "800-441-9695", "Email:": "\u200basktechservice@ppg.com", "Individual:": null}, "50": {"Entity:": "True Finish", "Phone:": "888-638-9795", "Email:": "Tforders@ppg.com", "Individual:": null}, "51": {"Entity:": "One Recognition and Rewards ", "Phone:": "888-598-4455 (US)  718-609-8500 (International toll) ", "Email:": "totalvisionrecognition@mcfina.com", "Individual:": null}, "52": {"Entity:": "Site Support Windows 10 Replacment Project", "Phone:": "724-720-4408", "Email:": null, "Individual:": null}}
 
 
 
@@ -393,7 +493,7 @@ ka_data = {
             ]
         },
 
-    '9822' : 
+    '9800' : 
         {
             "Subject" : "User needs Moneris Receipt",
             "Service" : "Hardware Support Services",
@@ -420,6 +520,34 @@ ka_data = {
             ]
         },
 
+    '9800-1' : 
+        {
+            "Subject" : "Clear check payment cleared in Elevate",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Elevate",
+            "Type" : "Service Request/Hardware/Other",
+        
+            "Description" : [
+                "Clear check payment cleared in Elevate",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-x1",
+                "-",
+                "User had a transaction that moneris froze on",
+                "needs old moneris payment cleared",
+                "Stuck in check payment",
+                "order number - "
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wpaf8465-2 > got the order number > saw check payment > reached out to systems support with order number > ",
+                "told user it should clear in about 30 minutes > closed elevate > cleared elevate kisok profile",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
     '7784' : 
         {
             "Subject" : "People pulse password reset",
@@ -439,7 +567,35 @@ ka_data = {
             
             "Actions & Solutions" : [
                 "from my pc went to hrportal > looked up the user by 6 digit ppg ID > verified ID > clicked reset password >",
-                "remoted into wpaf8523-x1 > pasted reset password link in browser > user rest password > was able to log into people pulse",
+                "remoted into wpaf{1}-x1 > pasted reset password link in browser > user rest password > was able to log into people pulse",
+                " ",
+                "Issue Resolved",
+                "Closing Ticket"
+            ]
+        },
+
+    '7256' : 
+        {
+            "Subject" : "Dymo Label Troubleshooting",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "Printer",
+            "Type" : "Incident/Hardware/Printer",
+        
+            "Description" : [
+                "Dymo Label Troubleshooting",
+                "-",
+                "Name: {0}",
+                "Device: wsus{1}-fp2",
+                "-",
+                "Dymo Label printer is not printing",
+                "Needs to be set up correctly"
+            ],
+            
+            "Actions & Solutions" : [
+                "remoted into wsus{1}-fp2 > control panel > view devices and printers > right clicked on dymo > general tab",
+                "change properties > preferences > advanced > paper size > 30364 Name badge label > OK > closed out",
+                "right clicked on the dymo again > advanced tab > printing defaults > advanced > paper size > 30364 Name badge label",
+                "(needs changed in both places) > apply > opened formula pro > printed a test label > success ",
                 " ",
                 "Issue Resolved",
                 "Closing Ticket"
@@ -619,7 +775,7 @@ ka_data = {
             ],
             
             "Actions & Solutions" : [
-                "remoted into wpaf{1}-2 > saw the issue > gathered TraceID ",
+                "remoted into wpaf{1}-2 > saw the issue > gathered TraceID > check that the srv was online in men and mice",
                 "Closed elevate > deleted C:\\PPG\\Elevate Kiosk Profile > deleted contents of C:\\PPGLogs ",
                 "restarted P > opened Elevate > had user try the action again > issue persists",
                 "messaged out systems team > they took a look at it > closed elevate, tried action again > success",
@@ -722,6 +878,37 @@ ka_data = {
                 "",
                 "Hello team,",
                 "Store {1}'s server went and needs to be replaced.  Are you able to send a new one?"
+            ]
+        },
+
+    '5214-2' : 
+        {
+            "Subject" : "Register PC offline for US/PR store",
+            "Service" : "Hardware Support Services",
+            "Configuration Item": "POS SRV Builds",
+            "Type" : "Service Request/PC Builds",
+        
+            "Description" : [
+                "Register PC offline for US/PR store",
+                "-",
+                "Name: {0}",
+                "Device: wpaf{1}-2",
+                "-",
+                "user's register 2 is offline",
+                "won't power on",
+                "Service Tag: "
+                
+            ],
+            
+            "Actions & Solutions" : [
+                "ran a ping in men and mice > saw that the wpaf{1}-2 was red, offline",
+                "Had user restart the PC > f2 to go into Bios > boot sequence > uncheck all except windows boot manager",
+                "restart PC > issue persists > had user unplug the PC completely > hold power button for 30 seconds",
+                "plug pc back in > power it back on > Issue persists > had user disconnect ethernet cable from PC",
+                "Escalating to Site IT",
+                "",
+                "Hello team,",
+                "Store {1}'s register 2 is no longer booting to windows.  Are you able to send a replacement?"
             ]
         },
 
