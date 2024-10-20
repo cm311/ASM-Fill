@@ -1,7 +1,7 @@
 <div id="container">
     <!-- Top Container -->
     <div id="topContainer">
-        <!-- Labels Container (70% of width) -->
+        <!-- Labels Container -->
         <div id="labelsContainer">
             <p id="configLabel">Configuration Item: </p>
             <p id="serviceLabel">Service: </p>
@@ -28,9 +28,21 @@
 
     <!-- Bottom Container -->
     <div id="botContainer">
-        <button id="searchContact">Search</button>
-        <input id="contactInput" placeholder="Search Contact Info">
-        <p id="contactInfo"></p>
-        <button id="fetchKAs">Reload Templates</button>
+        <!-- Contact Elements (45% width) -->
+        <div id="contactDiv">
+            <button id="searchContact">Search</button>
+            <input id="contactInput" placeholder="Search Contact Info">
+            <p id="contactInfo"></p>
+        </div>
+
+        <!-- Password Elements (45% width) -->
+        <div id="passwordDiv">
+            <button id="searchPassword">Search Password</button>
+            <input id="passwordInput" placeholder="Search Password Info">
+            <p id="passwordInfo"></p>
+        </div>
+
+        <!-- Reload Templates Button (10% width) -->
+        <button id="fetchKAs">Reload Data</button>
     </div>
 </div>

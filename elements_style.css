@@ -124,11 +124,31 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    justify-content: space-between; /* Ensures elements are spaced appropriately */
 }
 
-#searchContact {
-    width: 8%;
-    margin-right: 5px;
+/* Contact and Password Divs (45% width each) */
+#contactDiv, #passwordDiv {
+    width: 45%; /* Each takes up 45% of the total width */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Reload Templates Button (10% width) */
+#fetchKAs {
+    width: 10%; /* Reduced width to 10% */
+    background-color: #005A9C;
+    border-radius: 5px;
+    color: white;
+    padding: 8px 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Contact and Password Elements */
+#searchContact, #searchPassword {
     color: #F9FCFC;
     background-color: #005A9C;
     border: none;
@@ -139,29 +159,18 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#contactInput {
-    width: 15%;
+#contactInput, #passwordInput {
+    width: 30%; /* Reduced width for the input boxes */
     padding: 8px;
-    margin-right: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: border-color 0.3s ease;
 }
 
-#contactInfo {
+#contactInfo, #passwordInfo {
     flex: 1;
     margin-left: 5px;
     color: #F9FCFC;
-}
-
-#fetchKAs {
-    width: 12%;
-    background-color: #005A9C;
-    border-radius: 5px;
-    color: white;
-    padding: 8px 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 60%; /* Increased width for the paragraphs */
 }
