@@ -60,8 +60,12 @@ function addScripts() {
     function createMinimizedModalsContainer() {
         const container = document.createElement('div');
         container.setAttribute('id', 'minimizedModalsContainer');
-        const botContainer = document.getElementById('botContainer');
-        botContainer.insertAdjacentElement('afterend', container);
+        container.style.position = 'absolute'; // Ensure it appears directly below the extension
+        container.style.top = 'calc(100% + 10px)'; // Position it just below the extension
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.zIndex = '9998'; // Ensure it's above other content but below active modals
+        document.getElementById('container').appendChild(container); // Append to the container
         return container;
     }
 
@@ -70,8 +74,10 @@ function addScripts() {
         var modal = document.createElement('div');
         modal.setAttribute('id', modalId);
         modal.classList.add('modal');
-        modal.style.left = event.pageX + 'px';
-        modal.style.top = event.pageY + 'px';
+
+        // Set default position in case event coordinates are not available or out of bounds
+        modal.style.left = event.pageX ? event.pageX + 'px' : '100px';
+        modal.style.top = event.pageY ? event.pageY + 'px' : '100px';
 
         // Close button
         var closeButton = document.createElement('span');
@@ -119,22 +125,54 @@ function addScripts() {
         minimizedDiv.className = 'minimizedModal';
         minimizedDiv.innerHTML = title;
 
-        // Maximize icon
-        var maximizeIcon = document.createElement('span');
-        maximizeIcon.innerHTML = '⬆';
-        maximizeIcon.className = 'maximizeIcon';
-        maximizeIcon.onclick = function () {
-            // Restore the modal to its original position
-            document.body.appendChild(modal);
+        // Close ("X") icon
+        var closeIcon = document.createElement('span');
+        closeIcon.innerHTML = '✖';
+        closeIcon.className = 'closeMinimizedIcon';
+        closeIcon.onclick = function () {
             minimizedDiv.remove();
         };
 
-        minimizedDiv.appendChild(maximizeIcon);
+        minimizedDiv.appendChild(closeIcon);
+        minimizedDiv.onclick = function (event) {
+            if (event.target !== closeIcon) {
+                // Restore the modal to its original position
+                modal.style.display = 'block';  // Make the modal visible again
+                document.body.appendChild(modal);
+                minimizedDiv.remove();
+            }
+        };
+
         minimizedModalsContainer.appendChild(minimizedDiv);
 
-        // Now remove the modal from the DOM
-        modal.style.display = 'none'; // Instead of removing, just hide it to keep reference
+        // Hide the modal to keep reference
+        modal.style.display = 'none'; 
     }
+
+    // Function to handle key press events
+    function handleKeyPress(event, button) {
+        if (event.key === 'Enter') {
+            button.click();
+        } else if (event.key === 'Escape') {
+            const openModal = document.querySelector('.modal');
+            if (openModal) {
+                openModal.remove();
+            }
+        }
+    }
+
+    // Event listeners for search input fields
+    document.getElementById('searchInput').addEventListener('keydown', function (event) {
+        handleKeyPress(event, searchButton);
+    });
+
+    document.getElementById('contactInput').addEventListener('keydown', function (event) {
+        handleKeyPress(event, searchContact);
+    });
+
+    document.getElementById('passwordInput').addEventListener('keydown', function (event) {
+        handleKeyPress(event, searchPassword);
+    });
 
     // Description Button Event Listener
     descriptionButton.addEventListener('click', function () {
@@ -173,11 +211,21 @@ function addScripts() {
 
         for (var key in ka_data) {
             if (ka_data[key]["Subject"].toLowerCase().includes(searched.toLowerCase())) {
-                content += "<p><strong>Key:</strong> " + key + "<br><strong>Subject:</strong> " + ka_data[key]["Subject"] + "</p>";
+                // Create clickable KA entry
+                content += `<p class="clickableKA" data-ka="${key}"><strong>Key:</strong> ${key}<br><strong>Subject:</strong> ${ka_data[key]["Subject"]}</p>`;
             }
         }
 
-        createModal('Suggested KAs', content, event, 'searchModal', 'closeSearchModal', 'minimizeSearchModal');
+        const modal = createModal('Suggested KAs', content, event, 'searchModal', 'closeSearchModal', 'minimizeSearchModal');
+
+        // Add click event to populate KA in input field
+        modal.querySelectorAll('.clickableKA').forEach(function (element) {
+            element.addEventListener('click', function () {
+                const kaNumber = this.getAttribute('data-ka');
+                document.getElementById('kaInput').value = kaNumber;
+                modal.remove(); // Optionally close the modal after selecting a KA
+            });
+        });
     });
 
     // Search Contact Button Event Listener
@@ -227,7 +275,7 @@ function addScripts() {
         document.getElementById('suggestedKA').textContent = ' ';
         document.getElementById('contactInput').value = '';
         document.getElementById('contactInfo').textContent = ' ';
-        document.getElementById('passwordInput').value = ' ';
+        document.getElementById('passwordInput').value = "";
         document.getElementById('passwordInfo').textContent = ' ';
     });
 
@@ -265,7 +313,6 @@ function copyToClipboard(text) {
     document.execCommand("copy");
     document.body.removeChild(dummy);
 }
-
 
 
 // Sample Data: Replace with your real data
