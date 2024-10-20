@@ -43,8 +43,8 @@
     width: auto; /* Takes up only the space it needs */
 }
 
-/* Actions and Description Buttons */
-#actionsButton, #descriptionButton {
+/* Actions, Description, and Other Buttons */
+#actionsButton, #descriptionButton, #searchButton, #clearButton, #searchContact, #searchPassword, #fetchKAs {
     width: auto;
     height: 35px; /* Same height as other buttons */
     color: #F9FCFC;
@@ -58,7 +58,7 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#actionsButton:hover, #descriptionButton:hover {
+#actionsButton:hover, #descriptionButton:hover, #searchButton:hover, #clearButton:hover, #searchContact:hover, #searchPassword:hover, #fetchKAs:hover {
     background-color: #00477A; /* Darker on hover */
     transform: translateY(-2px); /* Lift on hover */
 }
@@ -85,19 +85,6 @@
     margin-bottom: 5px;
     align-items: center;
     width: 100%;
-}
-
-#searchButton, #clearButton {
-    width: 8%;
-    margin-right: 5px;
-    color: #F9FCFC;
-    background-color: #005A9C;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #searchInput {
@@ -135,30 +122,7 @@
     align-items: center;
 }
 
-/* Reload Templates Button (10% width) */
-#fetchKAs {
-    width: 10%; /* Reduced width to 10% */
-    background-color: #005A9C;
-    border-radius: 5px;
-    color: white;
-    padding: 8px 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
 /* Contact and Password Elements */
-#searchContact, #searchPassword {
-    color: #F9FCFC;
-    background-color: #005A9C;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
 #contactInput, #passwordInput {
     width: 30%; /* Reduced width for the input boxes */
     padding: 8px;
@@ -173,4 +137,65 @@
     margin-left: 5px;
     color: #F9FCFC;
     width: 60%; /* Increased width for the paragraphs */
+}
+
+/* Modal Styles */
+#passwordModal, #searchModal, #contactModal {
+    position: absolute;
+    width: 750px;  
+    background-color: lightblue;
+    padding: 15px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000;  
+    max-height: 300px;  
+    overflow-y: auto;   
+}
+
+/* Modal Title */
+.modalTitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Minimized Modals Container */
+#minimizedModalsContainer {
+    margin-top: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Minimized Modal Styles */
+.minimizedModal {
+    background: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Maximize Icon Style */
+.maximizeIcon {
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* Close Button and Minimize Button for Modal */
+#closeModal, #closeSearchModal, #closeContactModal, #minimizePasswordModal, #minimizeSearchModal, #minimizeContactModal {
+    position: sticky; 
+    top: 0;
+    color: #333;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
 }

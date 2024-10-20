@@ -54,7 +54,89 @@ function addScripts() {
     var clearButton = document.getElementById('clearButton');
     var searchContact = document.getElementById('searchContact');
     var fetchKAs = document.getElementById('fetchKAs');
+    var searchPassword = document.getElementById('searchPassword');
+    var minimizedModalsContainer = document.getElementById('minimizedModalsContainer') || createMinimizedModalsContainer();
 
+    function createMinimizedModalsContainer() {
+        const container = document.createElement('div');
+        container.setAttribute('id', 'minimizedModalsContainer');
+        const botContainer = document.getElementById('botContainer');
+        botContainer.insertAdjacentElement('afterend', container);
+        return container;
+    }
+
+    function createModal(title, content, event, modalId, closeButtonId, minimizeButtonId) {
+        // Create modal elements
+        var modal = document.createElement('div');
+        modal.setAttribute('id', modalId);
+        modal.classList.add('modal');
+        modal.style.left = event.pageX + 'px';
+        modal.style.top = event.pageY + 'px';
+
+        // Close button
+        var closeButton = document.createElement('span');
+        closeButton.innerHTML = '&times;';
+        closeButton.setAttribute('id', closeButtonId);
+        closeButton.classList.add('closeButton');
+
+        closeButton.onclick = function () {
+            modal.remove();
+        };
+
+        // Minimize button
+        var minimizeButton = document.createElement('span');
+        minimizeButton.innerHTML = '-';
+        minimizeButton.setAttribute('id', minimizeButtonId);
+        minimizeButton.classList.add('minimizeButton');
+
+        minimizeButton.onclick = function () {
+            minimizeModal(modal, title);
+        };
+
+        // Modal title
+        var modalTitle = document.createElement('div');
+        modalTitle.className = 'modalTitle';
+        modalTitle.innerHTML = title;
+
+        // Modal body
+        var modalBody = document.createElement('div');
+        modalBody.className = 'modalBody';
+        modalBody.innerHTML = content;
+
+        // Append modal elements
+        modal.appendChild(closeButton);
+        modal.appendChild(minimizeButton);
+        modal.appendChild(modalTitle);
+        modal.appendChild(modalBody);
+        document.body.appendChild(modal);
+
+        return modal;
+    }
+
+    function minimizeModal(modal, title) {
+        // Create minimized modal representation before removing the modal itself
+        var minimizedDiv = document.createElement('div');
+        minimizedDiv.className = 'minimizedModal';
+        minimizedDiv.innerHTML = title;
+
+        // Maximize icon
+        var maximizeIcon = document.createElement('span');
+        maximizeIcon.innerHTML = '⬆';
+        maximizeIcon.className = 'maximizeIcon';
+        maximizeIcon.onclick = function () {
+            // Restore the modal to its original position
+            document.body.appendChild(modal);
+            minimizedDiv.remove();
+        };
+
+        minimizedDiv.appendChild(maximizeIcon);
+        minimizedModalsContainer.appendChild(minimizedDiv);
+
+        // Now remove the modal from the DOM
+        modal.style.display = 'none'; // Instead of removing, just hide it to keep reference
+    }
+
+    // Description Button Event Listener
     descriptionButton.addEventListener('click', function () {
         var storeValue = document.getElementById('storeInput').value;
         var kaValue = document.getElementById('kaInput').value.trim();
@@ -69,6 +151,7 @@ function addScripts() {
         document.getElementById('typeLabel').innerHTML = 'Type: ' + ka_data[kaValue]['Type'];
     });
 
+    // Actions Button Event Listener
     actionsButton.addEventListener('click', function () {
         var storeValue = document.getElementById('storeInput').value;
         var kaValue = document.getElementById('kaInput').value.trim();
@@ -83,102 +166,56 @@ function addScripts() {
         document.getElementById('typeLabel').innerHTML = 'Type: ' + ka_data[kaValue]['Type'];
     });
 
-    searchButton.addEventListener('click', function () {
-        var searched = document.getElementById('searchInput').value;
-        document.getElementById('suggestedKA').innerHTML = "   ";
+    // Search Button Event Listener for Suggested KAs
+    searchButton.addEventListener('click', function (event) {
+        const searched = document.getElementById('searchInput').value;
+        let content = '';
 
         for (var key in ka_data) {
             if (ka_data[key]["Subject"].toLowerCase().includes(searched.toLowerCase())) {
-                document.getElementById('suggestedKA').innerHTML += "    " + key + " " + ka_data[key]["Subject"];
+                content += "<p><strong>Key:</strong> " + key + "<br><strong>Subject:</strong> " + ka_data[key]["Subject"] + "</p>";
             }
         }
+
+        createModal('Suggested KAs', content, event, 'searchModal', 'closeSearchModal', 'minimizeSearchModal');
     });
 
-    searchContact.addEventListener('click', function () {
-        var searched = document.getElementById('contactInput').value;
-        console.log(searched);
-        
-        document.getElementById('contactInfo').innerHTML = "   ";
+    // Search Contact Button Event Listener
+    searchContact.addEventListener('click', function (event) {
+        const searched = document.getElementById('contactInput').value;
+        let content = '';
 
         for (var key in contacts) {
             if (contacts[key]["Entity:"].toLowerCase().includes(searched.toLowerCase())) {
-                document.getElementById('contactInfo').innerHTML += " " + contacts[key]["Entity:"] + "  " + contacts[key]["Phone:"] +
-                    "   " + contacts[key]["Email:"] + "          ";
+                content += "<p><strong>Entity:</strong> " + contacts[key]["Entity:"] +
+                    "<br><strong>Phone:</strong> " + (contacts[key]["Phone:"] || "N/A") +
+                    "<br><strong>Email:</strong> " + (contacts[key]["Email:"] || "N/A") + "</p>";
             }
         }
+
+        createModal('Contacts', content, event, 'contactModal', 'closeContactModal', 'minimizeContactModal');
     });
 
+    // Search Password Button Event Listener
     searchPassword.addEventListener('click', function (event) {
-        var searched = document.getElementById('passwordInput').value;
-        console.log(searched);
-    
-        // Create modal elements
-        var modal = document.createElement('div');
-        modal.setAttribute('id', 'passwordModal');
-        modal.style.position = 'absolute';
-        modal.style.left = event.pageX + 'px';  // Position based on where the mouse was clicked
-        modal.style.top = event.pageY + 'px';   // Position based on where the mouse was clicked
-        modal.style.width = '750px';  // Set modal width to be wider (2.5x previous width)
-        modal.style.backgroundColor = 'lightblue';  // Light blue background
-        modal.style.padding = '15px';
-        modal.style.border = '1px solid #888';
-        modal.style.borderRadius = '10px';
-        modal.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
-        modal.style.zIndex = '1000';  // Ensure modal appears on top
-        modal.style.maxHeight = '200px';  // Limit height with scroll if needed
-        modal.style.overflowY = 'auto';   // Enable scrolling for long content
-    
-        // Close button
-        var closeButton = document.createElement('span');
-        closeButton.innerHTML = '&times;';
-        closeButton.style.color = '#333';
-        closeButton.style.float = 'right';
-        closeButton.style.fontSize = '20px';
-        closeButton.style.cursor = 'pointer';
-        
-        // Close modal when close button is clicked
-        closeButton.onclick = function () {
-            modal.remove();
-        };
-    
-        // Modal body where the search results will go
-        var modalBody = document.createElement('div');
-        modalBody.setAttribute('id', 'modalBody');
-    
-        // Clear previous search results
-        modalBody.innerHTML = "";
-    
-        // Loop through the passwords object and search both Description and Account
+        const searched = document.getElementById('passwordInput').value;
+        let content = '';
+
         for (var key in passwords) {
             var description = passwords[key]["Description"] ? passwords[key]["Description"].toLowerCase() : "";
             var account = passwords[key]["Account"] ? passwords[key]["Account"].toLowerCase() : "";
-    
+
             if (description.includes(searched.toLowerCase()) || account.includes(searched.toLowerCase())) {
-                modalBody.innerHTML += 
-                    "<p><strong>Description:</strong> " + passwords[key]["Description"] + 
-                    "<br><strong>Account:</strong> " + passwords[key]["Account"] + 
+                content += "<p><strong>Description:</strong> " + passwords[key]["Description"] +
+                    "<br><strong>Account:</strong> " + passwords[key]["Account"] +
                     "<br><strong>Password:</strong> " + passwords[key]["Password"] + "</p>";
             }
         }
-    
-        // Append modal elements
-        modal.appendChild(closeButton);
-        modal.appendChild(modalBody);
-        document.body.appendChild(modal);
-    
-        // Close modal if clicked outside of the modal content
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.remove();
-            }
-        };
-    });
-    
-    
-    
-    
-    
 
+        createModal('Passwords', content, event, 'passwordModal', 'closePasswordModal', 'minimizePasswordModal');
+    });
+
+    // Clear Button Event Listener
     clearButton.addEventListener('click', function () {
         document.getElementById('serviceLabel').innerHTML = "Service: ";
         document.getElementById('configLabel').innerHTML = "Configuration Item: ";
@@ -194,6 +231,7 @@ function addScripts() {
         document.getElementById('passwordInfo').textContent = ' ';
     });
 
+    // Fetch KAs Event Listener
     fetchKAs.addEventListener('click', function () {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'https://asm-site-update-baa2f1b3e712.herokuapp.com/list/');
@@ -215,10 +253,9 @@ function addScripts() {
 
         xhr.send();
     });
-
-    
-
 }
+
+
 
 function copyToClipboard(text) {
     var dummy = document.createElement("textarea");
@@ -228,6 +265,8 @@ function copyToClipboard(text) {
     document.execCommand("copy");
     document.body.removeChild(dummy);
 }
+
+
 
 // Sample Data: Replace with your real data
 contacts = {
