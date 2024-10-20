@@ -12,10 +12,5 @@
   },
   "browser_action": {
     "default_icon": "coffee.png"
-  },
-  "content_scripts": [
-    {
-      "js": ["content_updated.js"]
-    }
-  ]
+  }
 }
